@@ -22,16 +22,22 @@ most_popular_authors = """SELECT DISTINCT authors.name, COUNT(path) AS count
                           ORDER BY count DESC;"""
 
 
-requests_lead_to_errors = """SELECT COUNT(*),DATE(time),(SELECT COUNT(*)
-                             FROM log
-                             WHERE status = '404 NOT FOUND')
-                             AS TotalErrorCount
-                             FROM log
-                             WHERE status = '404 NOT FOUND'
-                             GROUP BY DATE(time)
-                             HAVING COUNT(*) > 130
-                             ORDER BY COUNT(*) DESC
-                             LIMIT 1;"""
+requests_lead_to_errors = """SELECT error_days.error_day, all_days.day_requests, error_days.error_count,
+                            ROUND(CAST(error_days.error_count::decimal
+                            / all_days.day_requests * 100 AS  NUMERIC), 2)
+                            AS error_percetage
+                            FROM (select DATE(time) AS day, COUNT(*)
+                            AS day_requests
+                            FROM log
+                            GROUP BY day) AS all_days, (select DATE(time)
+                            AS error_day, count(*) AS error_count
+                            FROM log
+                            WHERE status = '404 NOT FOUND'
+                            GROUP BY error_day) AS error_days
+                            WHERE all_days.day = error_days.error_day
+                            AND error_days.error_count >
+                            (all_days.day_requests / 100)
+                            ORDER BY error_days.error_count DESC;"""
 
 
 def connect():
@@ -71,11 +77,9 @@ def lead_to_errors():
             print()
 
             for i in error_rate:
-                count = i[0]
-                date = datetime.strftime(i[1], '%B %d,%Y')
-                total_error = i[2]
-                percent = ((count / total_error) * 100)
-                print("\t {0} - {1:.2f}% errors".format(date, percent))
+                date = datetime.strftime(i[0], '%B %d,%Y')
+                percent = i[3]
+                print("\t {0} - {1}% errors".format(date, percent))
                 print()
 
 
