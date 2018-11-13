@@ -11,4 +11,4 @@ Most Popular Authors?
 
 days more than 1% of requests lead to errors?
 
-         July 17,2016 - 9.80% errors
+         July 17,2016 - 2.26% errors
