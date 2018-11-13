@@ -1,7 +1,7 @@
 # Log Analysis Project
 
 Your task is to create a reporting tool that prints out reports (in plain text) based on the data in the database.
- This reporting tool is a Python program using the psycopg2 module to connect to the database. So what are we reporting, anyway?
+ This reporting tool is a Python program using the psycopg2 module to connect to the database.
 
 
 ### Prerequisites
@@ -14,7 +14,6 @@ You'll need to download the following softwares.
 * [VM](https://www.virtualbox.org/)
 * [Git](https://git-scm.com/)
 * [The data](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
-* [VM Configurations](https://classroom.udacity.com/nanodegrees/nd004/parts/51200cee-6bb3-4b55-b469-7d4dd9ad7765/modules/c57b57d4-29a8-4c5f-9bb8-5d53df3e48f4/lessons/5475ecd6-cfdb-4418-85a2-f2583074c08d/concepts/14c72fe3-e3fe-4959-9c4b-467cf5b7c3a0?contentVersion=5.0.0&contentLocale=en-us)
 
 
 ### Installing Packages 
@@ -27,7 +26,7 @@ pip3 install psycopg2
 ```
 
 ```
-pip install pycodestyle
+pip3 install pycodestyle
 ```
 
 
@@ -35,7 +34,7 @@ pip install pycodestyle
 ## Requirements
 
 Here are the questions the reporting tool should answer. The example answers given aren't the right ones, though!
-### 1. What are the most popular three articles of all time? Which articles have been accessed the most? Present this information as a sorted list with the most popular article at the top.
+ ** 1. What are the most popular three articles of all time? Which articles have been accessed the most? Present this information as a sorted list with the most popular article at the top. **
 
 Example:
 ```
@@ -44,7 +43,7 @@ Example:
     "Political Scandal Ends In Political Scandal" — 553 views
 ```
 
-### 2. Who are the most popular article authors of all time? That is, when you sum up all of the articles each author has written, which authors get the most page views? Present this as a sorted list with the most popular author at the top.
+** 2. Who are the most popular article authors of all time? That is, when you sum up all of the articles each author has written, which authors get the most page views? Present this as a sorted list with the most popular author at the top. **
 Example:
 ```
     Ursula La Multa — 2304 views
@@ -53,7 +52,7 @@ Example:
     Anonymous Contributor — 1023 views
 ```
 
-### 3. On which days did more than 1% of requests lead to errors? The log table includes a column status that indicates the HTTP status code that the news site sent to the user's browser.
+** 3. On which days did more than 1% of requests lead to errors? The log table includes a column status that indicates the HTTP status code that the news site sent to the user's browser. **
 Example:
 ```
     July 29, 2016 — 2.5% errors
@@ -107,7 +106,7 @@ Most Popular Authors?
 ```
 days more than 1% of requests lead to errors?
 
-         July 17,2016 - 9.80% errors
+         July 17,2016 - 2.26% errors
 
 ```
 
