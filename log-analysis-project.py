@@ -22,22 +22,23 @@ most_popular_authors = """SELECT DISTINCT authors.name, COUNT(path) AS count
                           ORDER BY count DESC;"""
 
 
-requests_lead_to_errors = """SELECT error_days.error_day, all_days.day_requests, error_days.error_count,
-                            ROUND(CAST(error_days.error_count::decimal
-                            / all_days.day_requests * 100 AS  NUMERIC), 2)
-                            AS error_percetage
-                            FROM (select DATE(time) AS day, COUNT(*)
-                            AS day_requests
-                            FROM log
-                            GROUP BY day) AS all_days, (select DATE(time)
-                            AS error_day, count(*) AS error_count
-                            FROM log
-                            WHERE status = '404 NOT FOUND'
-                            GROUP BY error_day) AS error_days
-                            WHERE all_days.day = error_days.error_day
-                            AND error_days.error_count >
-                            (all_days.day_requests / 100)
-                            ORDER BY error_days.error_count DESC;"""
+requests_lead_to_errors = """SELECT to_char(error_days.error_day, 'FMMonth DD, YYYY'),
+           ROUND((error_days.error_count::numeric/
+                  all_days.day_requests * 100), 2) AS error_percetage
+            FROM (
+                SELECT DATE(time) AS day, COUNT(*) AS day_requests
+                FROM log
+                GROUP BY day
+            ) AS all_days,
+            (
+                SELECT DATE(time) AS error_day, count(*) AS error_count
+                FROM log
+                WHERE status = '404 NOT FOUND'
+                GROUP BY error_day
+            ) AS error_days
+            WHERE all_days.day = error_days.error_day
+            AND error_days.error_count > (all_days.day_requests / 100)
+            ORDER BY error_days.error_count DESC;"""
 
 
 def connect():
@@ -51,8 +52,8 @@ def most_popular_articles():
             popular_articles = cursor.fetchall()
             print("Most Popular Articles of all time? ")
 
-            for article in popular_articles:
-                print('\t {0} views'.format('-'.join(map(str, article))))
+            for article, views in popular_articles:
+                print('\t "{0}" - {1} views'.format(article, views))
             print()
 
 
@@ -63,8 +64,8 @@ def most_popular_author():
             popular_authors = cursor.fetchall()
             print("Most Popular Authors?")
 
-            for author in popular_authors:
-                print('\t {0} views'.format('-'.join(map(str, author))))
+            for author, views in popular_authors:
+                print('\t {0} - {1} views'.format(author, views))
             print()
 
 
@@ -77,8 +78,8 @@ def lead_to_errors():
             print()
 
             for i in error_rate:
-                date = datetime.strftime(i[0], '%B %d,%Y')
-                percent = i[3]
+                date = i[0]
+                percent = i[1]
                 print("\t {0} - {1}% errors".format(date, percent))
                 print()
 
