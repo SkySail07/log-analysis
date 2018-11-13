@@ -112,7 +112,7 @@ days more than 1% of requests lead to errors?
 
 
 
-## Authors
+## Author
 
 * **Tarek H** - *Initial work* - [Udacity](https://github.com/SkySail07)
 
